@@ -1,0 +1,22 @@
+{
+  "name": "iot-web-dashboard",
+  "version": "1.0.0",
+  "description": "Web dashboard to display outputs from corresponding internet-of-things project: https://github.com/Jack-P1/iot-stock-monitor.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jack-P1/iot-web-dashboard.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Jack-P1/iot-web-dashboard/issues"
+  },
+  "homepage": "https://github.com/Jack-P1/iot-web-dashboard#readme",
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}
