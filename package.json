@@ -17,6 +17,9 @@
   },
   "homepage": "https://github.com/Jack-P1/iot-web-dashboard#readme",
   "dependencies": {
-    "express": "^4.21.2"
+    "body-parser": "^1.20.3",
+    "express": "^4.21.2",
+    "express-async-handler": "^1.2.0",
+    "sqlite3": "^5.1.7"
   }
 }
