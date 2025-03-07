@@ -8,11 +8,20 @@ const db = new sqlite.Database(dbPath, sqlite.OPEN_READWRITE, (err) => {
     }
 });
 
-exports.findUserByEmail = async (param) => {
+exports.findUserByEmail = async (params) => {
     return new Promise((resolve, reject) => {
-        db.get('SELECT id FROM user WHERE email = ?', [param.email], (err, row) => {
+        db.get('SELECT id FROM user WHERE email = ?', [params.email], (err, row) => {
             if (err) reject(err);
             resolve(row);
+        })
+    })
+}
+
+exports.createNewUser = async (params) => {
+    return new Promise((resolve, reject) => {
+        db.run('INSERT INTO user (username, email, password) VALUES (?,?,?)', [params.name, params.email, params.password], (err) => {
+            if (err) reject(err);
+            resolve();
         })
     })
 
