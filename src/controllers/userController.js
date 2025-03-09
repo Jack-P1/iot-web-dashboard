@@ -8,7 +8,6 @@ exports.user_list = asyncHandler(async (req, res, next) => {
 });
 
 exports.user_create = asyncHandler(async (req, res, next) => {
-    // res.send("NOT IMPLEMENTED: user create")
     if(req.body.username && req.body.email && req.body.password){
         let user = await User.findUserByEmail({email: req.body.email})
         
@@ -18,7 +17,6 @@ exports.user_create = asyncHandler(async (req, res, next) => {
         
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
-        // TODO hash password before
         const newUser = {
             username: req.body.username,
             email: req.body.email,
@@ -48,7 +46,8 @@ exports.user_login = asyncHandler(async (req, res, next) => {
             return res.status(401).send("Invalid credentials")
         }   
 
-        const token = jwt.sign({ email: user.email, role: user.role }, 'secret');
+        // TODO: replace with env secret, add expiry
+        const token = jwt.sign({ id: user.id, role: user.role }, 'secret');
 
         return res.status(200).json(token)
     } catch (err){

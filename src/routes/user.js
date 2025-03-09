@@ -1,12 +1,13 @@
-let bodyParser = require("body-parser")
-let urlencodedParser = bodyParser.urlencoded({ extended: false })
-let userController = require('../controllers/userController')
+const auth = require("../middleware/auth")
+const bodyParser = require("body-parser")
+const urlencodedParser = bodyParser.urlencoded({ extended: false })
+const userController = require('../controllers/userController')
 
 const express = require('express')
 const router = express.Router()
 
 //define routes here
-router.get('/', userController.user_list)
+router.get('/', auth.verifyToken, userController.user_list)
 
 router.post('/', urlencodedParser, userController.user_create)
 
