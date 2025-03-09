@@ -10,4 +10,6 @@ router.get('/', userController.user_list)
 
 router.post('/', urlencodedParser, userController.user_create)
 
+router.post('/login', urlencodedParser, userController.user_login)
+
 module.exports = router

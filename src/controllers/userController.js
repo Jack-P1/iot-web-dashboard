@@ -1,3 +1,5 @@
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const User = require("../database/userModel")
 const asyncHandler = require("express-async-handler")
 
@@ -11,21 +13,45 @@ exports.user_create = asyncHandler(async (req, res, next) => {
         let user = await User.findUserByEmail({email: req.body.email})
         
         if (user){
-            res.status(400).send("User already exists!")
+            return res.status(400).send("User already exists!")
         }
-    
+        
+        const hashedPassword = await bcrypt.hash(req.body.password, 10);
+
         // TODO hash password before
         const newUser = {
             username: req.body.username,
             email: req.body.email,
-            password: req.body.password
+            password: hashedPassword
         }
         try{
             await User.createNewUser(newUser)
-            res.status(201).json({message: 'User registered successfully'})
+            return res.status(201).json({message: 'User registered successfully'})
         } catch(err){
-            res.status(500).json({ error: 'Internal server error' })
+            return res.status(500).json({ error: 'Internal server error' })
         }
 
+    }
+});
+
+exports.user_login = asyncHandler(async (req, res, next) => {
+    try{
+        let user = await User.findUserByEmail({email: req.body.email})
+        
+        if (!user){
+            return res.status(401).send("Invalid credentials")
+        }
+
+        const passwordMatch = await bcrypt.compare(req.body.password, user.password)
+
+        if (!passwordMatch){
+            return res.status(401).send("Invalid credentials")
+        }   
+
+        const token = jwt.sign({ email: user.email, role: user.role }, 'secret');
+
+        return res.status(200).json(token)
+    } catch (err){
+        return res.status(500).json({error : 'Internal server error'})
     }
 });
