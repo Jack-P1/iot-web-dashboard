@@ -42,8 +42,21 @@ CREATE TABLE `permission` (
   FOREIGN KEY(roleId) REFERENCES role(id)
 );
 
--- TODO: INSERT TEST DATA
--- INSERT INTO user (name, email, password)
--- VALUES ('Bob', 'bob@bob.co.uk', 'secret'),
---        ('Dave', 'dave@test.co.uk', 'password123');
+INSERT INTO company (name)
+VALUES ('Eco Ltd');
 
+INSERT INTO role (roleName)
+VALUES ('user'),
+       ('admin');
+
+INSERT INTO user (username, email, password, roleId, companyId)
+VALUES ('Bob', 'bob@bob.co.uk', 'secret', (SELECT id FROM role WHERE roleName = 'admin'), (SELECT id from company WHERE name = 'Eco Ltd')),
+       ('Dave', 'dave@test.co.uk', 'password123', (SELECT id FROM role WHERE roleName = 'user'), (SELECT id from company WHERE name = 'Eco Ltd'));
+
+INSERT INTO branch (name, location, companyId)
+VALUES ('Eco Bristol', 'Bristol', (SELECT id from company WHERE name = 'Eco Ltd'));
+
+INSERT INTO item (name, reading, branchId)
+VALUES ('testPico', 0, (SELECT id from branch WHERE name = 'Eco Bristol'));
+
+-- TODO permissions test data
