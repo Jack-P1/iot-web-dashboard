@@ -42,6 +42,23 @@ CREATE TABLE `permission` (
   FOREIGN KEY(roleId) REFERENCES role(id)
 );
 
+CREATE TABLE `mqtt_group` (
+  `id` integer PRIMARY KEY,
+  `groupKey` varchar(255),
+  `branchId` integer,
+  FOREIGN KEY(branchId) REFERENCES branch(id)
+);
+
+CREATE TABLE `mqtt_topic` (
+  `id` integer PRIMARY KEY,
+  `topic` varchar(255),
+  `qos` integer,
+  `last_payload` text,
+  `last_updated` timestamp,
+  `itemId` integer,
+  FOREIGN KEY(itemId) REFERENCES item(id)
+);
+
 INSERT INTO company (name)
 VALUES ('Eco Ltd');
 
