@@ -76,4 +76,7 @@ VALUES ('Eco Bristol', 'Bristol', (SELECT id from company WHERE name = 'Eco Ltd'
 INSERT INTO item (name, reading, branchId)
 VALUES ('testPico', 0, (SELECT id from branch WHERE name = 'Eco Bristol'));
 
+INSERT INTO mqtt_group (groupKey, branchId)
+VALUES ('eco-bristol', (SELECT id from branch WHERE name = 'Eco Bristol'));
+
 -- TODO permissions test data
