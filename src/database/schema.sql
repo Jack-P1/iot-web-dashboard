@@ -54,7 +54,7 @@ CREATE TABLE `mqtt_topic` (
   `topic` varchar(255),
   `qos` integer,
   `last_payload` text,
-  `last_updated` timestamp,
+  `last_updated` timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
   `itemId` integer,
   FOREIGN KEY(itemId) REFERENCES item(id)
 );
@@ -74,9 +74,11 @@ INSERT INTO branch (name, location, companyId)
 VALUES ('Eco Bristol', 'Bristol', (SELECT id from company WHERE name = 'Eco Ltd'));
 
 INSERT INTO item (name, reading, branchId)
-VALUES ('testPico', 0, (SELECT id from branch WHERE name = 'Eco Bristol'));
+VALUES ('testPico', 0, (SELECT id from branch WHERE name = 'Eco Bristol')),
+       ('test-pico-7', 0, (SELECT id from branch WHERE name = 'Eco Bristol'));
 
 INSERT INTO mqtt_group (groupKey, branchId)
 VALUES ('eco-bristol', (SELECT id from branch WHERE name = 'Eco Bristol'));
 
--- TODO permissions test data
+INSERT INTO mqtt_topic (topic, qos, last_payload, itemId) 
+VALUES ('jackp98/feeds/eco-bristol.test-pico-7', 0, '', (SELECT id FROM item WHERE name = 'test-pico-7'))

@@ -1,5 +1,6 @@
 const asyncHandler = require("express-async-handler")
 const MQTTGroup = require("../database/mqttGroupModel")
+const MQTTTopic = require("../database/mqttTopicModel")
 const Item = require("../database/itemModel")
 
 exports.stock_list = asyncHandler(async (req, res) => {
@@ -102,6 +103,10 @@ exports.create_group_feed = asyncHandler(async (req, res) => {
         console.log(branch)
 
         await Item.createNewItem({name: req.body.clientId, reading: 0, branchId: branch.branchId})
+
+        let item = await Item.findItemIdByName({name: req.body.clientId})
+
+        await MQTTTopic.createNewTopic({topic: feed, qos: 0, last_payload: '', itemId: item.id})
         
         return res.status(200).json({feedName: feed})
     } catch(err){
