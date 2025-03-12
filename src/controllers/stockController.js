@@ -1,5 +1,6 @@
 const asyncHandler = require("express-async-handler")
 const MQTTGroup = require("../database/mqttGroupModel")
+const Item = require("../database/itemModel")
 
 exports.stock_list = asyncHandler(async (req, res) => {
 
@@ -62,9 +63,14 @@ exports.create_group_feed = asyncHandler(async (req, res) => {
     console.log(req.body.groupKey)
 
     let group = await MQTTGroup.findGroupByKey({key: req.body.groupKey})
+    let item = await Item.findItemIdByName({name: req.body.clientId})
 
     if(!group){
         return res.status(400).json({message: "Group does not exist!"})
+    }
+
+    if(item){
+        return res.status(400).json({message: "Item name already exists!"})
     }
 
     const url = `https://io.adafruit.com/api/v2/${process.env.MQTT_USERNAME}/groups/${req.body.groupKey}/feeds/`
@@ -89,9 +95,14 @@ exports.create_group_feed = asyncHandler(async (req, res) => {
 
         if(!response.ok){
             console.log(response.status)
-            res.status(400).json({error: "Bad request"})
+            return res.status(400).json({error: "Bad request"})
         }
 
+        let branch = await MQTTGroup.getBranchId({id: group.id})
+        console.log(branch)
+
+        await Item.createNewItem({name: req.body.clientId, reading: 0, branchId: branch.branchId})
+        
         return res.status(200).json({feedName: feed})
     } catch(err){
         console.log(err)

@@ -17,3 +17,13 @@ exports.findGroupByKey = async (params) => {
         })
     })
 }
+
+exports.getBranchId = async (params) => {
+    return new Promise((resolve, reject) => {
+        db.get('SELECT branchId FROM mqtt_group WHERE id = ?', [params.id], (err, row) => {
+            if (err) reject(err);
+            console.log(row);
+            resolve(row);
+        })
+    })
+}

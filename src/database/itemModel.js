@@ -8,9 +8,9 @@ const db = new sqlite.Database(dbPath, sqlite.OPEN_READWRITE, (err) => {
     }
 });
 
-exports.findUserByEmail = async (params) => {
+exports.findItemIdByName = async (params) => {
     return new Promise((resolve, reject) => {
-        db.get('SELECT * FROM user WHERE email = ?', [params.email], (err, row) => {
+        db.get('SELECT id FROM item WHERE name = ?', [params.name], (err, row) => {
             if (err) reject(err);
             console.log(row);
             resolve(row);
@@ -18,9 +18,9 @@ exports.findUserByEmail = async (params) => {
     })
 }
 
-exports.createNewUser = async (params) => {
+exports.createNewItem = async (params) => {
     return new Promise((resolve, reject) => {
-        db.run('INSERT INTO user (username, email, password) VALUES (?,?,?)', [params.name, params.email, params.password], (err) => {
+        db.run('INSERT INTO item (name, reading, branchId) VALUES (?,?,?)', [params.name, params.reading, params.branchId], (err) => {
             if (err) reject(err);
             resolve();
         })
