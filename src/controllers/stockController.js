@@ -3,26 +3,21 @@ const MQTTGroup = require("../database/mqttGroupModel")
 const MQTTTopic = require("../database/mqttTopicModel")
 const Item = require("../database/itemModel")
 
-exports.stock_list = asyncHandler(async (req, res) => {
+/*
+    Get all items available by branch ID
+*/
+exports.get_items_for_branch = asyncHandler(async (req, res) => {
 
-    const url = `https://io.adafruit.com/api/v2/${process.env.MQTT_USERNAME}/feeds/${process.env.MQTT_FEED_KEY}`
-    console.log(url)
+    if(!req.query.branchId){
+        res.status(400).send("No branch id given")
+    }
 
-    try{
-        const response = await fetch(url, {
-            headers: {
-                "x-aio-key": process.env.ADAFRUIT_AIO_KEY,
-            }
-        })
-
-        if(!response.ok){
-            console.log(response.status)
-        }
-
-        const json = await response.json();
-        console.log(json);
-    } catch(err){
-        console.log(err)
+    let items = await Item.getAllItemsByBranchId({branchId: req.query.branchId})
+    console.log(items)
+    if (items?.length){
+        return res.status(200).json(items)
+    } else{
+        return res.status(404).send("No items found for branch")
     }
 });
 
@@ -59,6 +54,11 @@ exports.create_feed = asyncHandler(async (req, res) => {
     }
 });
 
+/*
+    Create feed in group.
+    This is hit when setting up hardware
+    TODO: add API key authentication
+*/
 exports.create_group_feed = asyncHandler(async (req, res) => {
 
     console.log(req.body.groupKey)

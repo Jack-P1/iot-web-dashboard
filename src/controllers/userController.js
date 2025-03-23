@@ -22,6 +22,7 @@ exports.user_create = asyncHandler(async (req, res, next) => {
             email: req.body.email,
             password: hashedPassword
         }
+        console.log(newUser)
         try{
             await User.createNewUser(newUser)
             return res.status(201).json({message: 'User registered successfully'})
@@ -29,6 +30,8 @@ exports.user_create = asyncHandler(async (req, res, next) => {
             return res.status(500).json({ error: 'Internal server error' })
         }
 
+    } else{
+        return res.status(404).send("Must supply username, email, & password")
     }
 });
 

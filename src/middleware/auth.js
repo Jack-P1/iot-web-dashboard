@@ -11,7 +11,7 @@ exports.verifyToken = (req, res, next) => {
 
     const decoded = jwt.verify(token, 'secret')
 
-    req.id = decoded.id
+    req.userId = decoded.id
     req.role = decoded.role
 
     next()

@@ -68,7 +68,9 @@ VALUES ('user'),
 
 INSERT INTO user (username, email, password, roleId, companyId)
 VALUES ('Bob', 'bob@bob.co.uk', 'secret', (SELECT id FROM role WHERE roleName = 'admin'), (SELECT id from company WHERE name = 'Eco Ltd')),
-       ('Dave', 'dave@test.co.uk', 'password123', (SELECT id FROM role WHERE roleName = 'user'), (SELECT id from company WHERE name = 'Eco Ltd'));
+       ('Dave', 'dave@test.co.uk', 'password123', (SELECT id FROM role WHERE roleName = 'user'), (SELECT id from company WHERE name = 'Eco Ltd')),
+       ('test', 'test@test.com', '$2b$10$AWFvYN2eo4r14amPHZA1Suvtnr9kC2W.7Ldm9HtPzdwWfjwIp4wUa', (SELECT id FROM role WHERE roleName = 'admin'), (SELECT id from company WHERE name = 'Eco Ltd'));
+
 
 INSERT INTO branch (name, location, companyId)
 VALUES ('Eco Bristol', 'Bristol', (SELECT id from company WHERE name = 'Eco Ltd'));

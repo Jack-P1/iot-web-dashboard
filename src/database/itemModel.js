@@ -26,3 +26,12 @@ exports.createNewItem = async (params) => {
         })
     })
 }
+
+exports.getAllItemsByBranchId = async (params) => {
+    return new Promise((resolve, reject) => {
+        db.all('SELECT id, name, reading FROM item WHERE branchId = ?', [params.branchId], (err, row) => {
+            if (err) reject(err);
+            resolve(row);
+        })
+    })
+}

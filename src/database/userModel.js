@@ -18,9 +18,19 @@ exports.findUserByEmail = async (params) => {
     })
 }
 
+exports.getUserCompanyId = async (params) => {
+    return new Promise((resolve, reject) => {
+        db.get('SELECT companyId FROM user WHERE id = ?', [params.userId], (err, row) => {
+            if (err) reject(err);
+            console.log(row);
+            resolve(row);
+        })
+    })
+}
+
 exports.createNewUser = async (params) => {
     return new Promise((resolve, reject) => {
-        db.run('INSERT INTO user (username, email, password) VALUES (?,?,?)', [params.name, params.email, params.password], (err) => {
+        db.run('INSERT INTO user (username, email, password) VALUES (?,?,?)', [params.username, params.email, params.password], (err) => {
             if (err) reject(err);
             resolve();
         })
