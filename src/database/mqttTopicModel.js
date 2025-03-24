@@ -26,3 +26,16 @@ exports.getTopicByItemId = async (params) => {
         })
     })
 }
+
+exports.getAllTopicAndBranchId = async (params) => {
+    return new Promise((resolve, reject) => {
+        db.all('SELECT mqtt_topic.id, mqtt_topic.topic, mqtt_group.groupKey, item.branchId FROM mqtt_topic INNER JOIN item ON mqtt_topic.itemId = item.id INNER JOIN mqtt_group ON item.branchId = mqtt_group.branchId', 
+            [], 
+            (err, row) => {
+            if (err) reject(err);
+            console.log(row);
+            resolve(row);
+        })
+    })
+}
+
