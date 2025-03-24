@@ -4,6 +4,24 @@ const MQTTTopic = require("../database/mqttTopicModel")
 const Item = require("../database/itemModel")
 
 /*
+    Get corresponding mqtt feed data by item id
+*/
+exports.get_item_feed = asyncHandler(async (req, res) => {
+
+    if(!req.query.itemId){
+        res.status(400).send("No item id given")
+    }
+
+    const topic = await MQTTTopic.getTopicByItemId({itemId: req.query.itemId})
+    console.log(topic)
+    if (topic){
+        return res.status(200).json(topic)
+    } else{
+        return res.status(404).send("No data found for item")
+    }
+});
+
+/*
     Get all items available by branch ID
 */
 exports.get_items_for_branch = asyncHandler(async (req, res) => {

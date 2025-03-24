@@ -35,3 +35,12 @@ exports.getAllItemsByBranchId = async (params) => {
         })
     })
 }
+
+exports.getBranchIdByItemId = async (params) => {
+    return new Promise((resolve, reject) => {
+        db.get('SELECT branchId FROM item WHERE id = ?', [params.itemId], (err, row) => {
+            if (err) reject(err);
+            resolve(row);
+        })
+    })
+}

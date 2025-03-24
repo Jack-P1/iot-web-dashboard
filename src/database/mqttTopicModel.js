@@ -16,3 +16,13 @@ exports.createNewTopic = async (params) => {
         })
     })
 }
+
+exports.getTopicByItemId = async (params) => {
+    return new Promise((resolve, reject) => {
+        db.get('SELECT * FROM mqtt_topic WHERE itemId = ?', [params.itemId], (err, row) => {
+            if (err) reject(err);
+            console.log(row);
+            resolve(row);
+        })
+    })
+}
