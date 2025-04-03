@@ -18,7 +18,8 @@ function Login() {
             const requestBody = {email, password}
             console.log("GOT HERE!!!")
 
-            const response = await axios.post('http://127.0.0.1:3000/api/user/login/', {email, password}, {headers: {'content-type': 'application/x-www-form-urlencoded'}})
+            const response = await axios.post('http://127.0.0.1:3000/api/user/login/', {email, password}, 
+                {headers: {'content-type': 'application/x-www-form-urlencoded'}})
             if(response.status == 200){
                 setToken(response.data.token)
                 navigate('/home')
