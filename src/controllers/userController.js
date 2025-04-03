@@ -52,7 +52,7 @@ exports.user_login = asyncHandler(async (req, res, next) => {
         // TODO: replace with env secret, add expiry
         const token = jwt.sign({ id: user.id, role: user.role }, 'secret');
 
-        return res.status(200).json(token)
+        return res.status(200).json({token: token})
     } catch (err){
         return res.status(500).json({error : 'Internal server error'})
     }
