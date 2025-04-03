@@ -19,7 +19,7 @@ exports.getAllBranchesByCompanyId = async (params) => {
 
 exports.getAllBranchesForUser = async (params) => {
     return new Promise((resolve, reject) => {
-        db.all('SELECT branch.id FROM branch INNER JOIN user ON branch.companyId = user.companyId WHERE user.Id = ?', [params.userId], (err, row) => {
+        db.all('SELECT branch.id, name, location FROM branch INNER JOIN user ON branch.companyId = user.companyId WHERE user.Id = ?', [params.userId], (err, row) => {
             if (err) reject(err);
             resolve(row);
         })
