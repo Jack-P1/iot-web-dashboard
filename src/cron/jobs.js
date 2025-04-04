@@ -1,4 +1,5 @@
 const MqttTopic = require('../database/mqttTopicModel')
+const Reading = require('../database/readingModel')
 
 /*
     Get MQTT feed data at a set interval defined in app.js.
@@ -22,11 +23,13 @@ exports.getBatchMqttData = async () => {
                 topic: result.topic
             })))
         )
+        console.log(endpoints)
     
         const responses = await Promise.all(endpoints);
     
         if(responses){
-            await MqttTopic.bulkUpdateById(responses)
+            console.log(responses)
+            await Reading.bulkInsert(responses)
         }
 
     } catch(err) {

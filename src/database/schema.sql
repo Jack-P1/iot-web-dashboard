@@ -30,7 +30,6 @@ CREATE TABLE `branch` (
 CREATE TABLE `item` (
   `id` integer PRIMARY KEY,
   `name` TEXT,
-  `reading` TEXT,
   `branchId` integer,
   FOREIGN KEY(branchId) REFERENCES branch(id)
 );
@@ -59,28 +58,39 @@ CREATE TABLE `mqtt_topic` (
   FOREIGN KEY(itemId) REFERENCES item(id)
 );
 
+CREATE TABLE `reading` (
+  `id` integer PRIMARY KEY,
+  `itemId` integer,
+  `reading_value` TEXT,
+  `timestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+  FOREIGN KEY(itemId) REFERENCES item(id)
+);
+
 INSERT INTO company (name)
-VALUES ('Eco Ltd');
+VALUES ('Eco Ltd'),
+       ('Company Two');
 
 INSERT INTO role (roleName)
 VALUES ('user'),
        ('admin');
 
 INSERT INTO user (username, email, password, roleId, companyId)
-VALUES ('Bob', 'bob@bob.co.uk', 'secret', (SELECT id FROM role WHERE roleName = 'admin'), (SELECT id from company WHERE name = 'Eco Ltd')),
+VALUES ('Bob', 'bob@bob.co.uk', 'secret', (SELECT id FROM role WHERE roleName = 'admin'), (SELECT id from company WHERE name = 'Company Two')),
        ('Dave', 'dave@test.co.uk', 'password123', (SELECT id FROM role WHERE roleName = 'user'), (SELECT id from company WHERE name = 'Eco Ltd')),
        ('test', 'test@test.com', '$2b$10$AWFvYN2eo4r14amPHZA1Suvtnr9kC2W.7Ldm9HtPzdwWfjwIp4wUa', (SELECT id FROM role WHERE roleName = 'admin'), (SELECT id from company WHERE name = 'Eco Ltd'));
 
 
 INSERT INTO branch (name, location, companyId)
-VALUES ('Eco Bristol', 'Bristol', (SELECT id from company WHERE name = 'Eco Ltd'));
+VALUES ('Eco Bristol', 'Gloucester Road', (SELECT id from company WHERE name = 'Eco Ltd')),
+       ('Eco Bath', 'Bath', (SELECT id from company WHERE name = 'Eco Ltd')),
+       ('Company Two Ltd', 'Bristol', (SELECT id from company WHERE name = 'Company Two'));
 
-INSERT INTO item (name, reading, branchId)
-VALUES ('testPico', 0, (SELECT id from branch WHERE name = 'Eco Bristol')),
-       ('test-pico-7', 0, (SELECT id from branch WHERE name = 'Eco Bristol'));
+INSERT INTO item (name, branchId)
+VALUES ('testPico', (SELECT id from branch WHERE name = 'Eco Bristol')),
+       ('test-pico-7', (SELECT id from branch WHERE name = 'Eco Bristol'));
 
 INSERT INTO mqtt_group (groupKey, branchId)
 VALUES ('eco-bristol', (SELECT id from branch WHERE name = 'Eco Bristol'));
 
 INSERT INTO mqtt_topic (topic, qos, last_payload, itemId) 
-VALUES ('jackp98/feeds/eco-bristol.test-pico-7', 0, '', (SELECT id FROM item WHERE name = 'test-pico-7'))
+VALUES ('test-pico-7', 0, '', (SELECT id FROM item WHERE name = 'test-pico-7'))
