@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState, useContext } from "react";
 import { AuthContext } from "./Auth";
 import { Link } from "react-router-dom";
+import Table from 'react-bootstrap/Table';
 
 function Home() {
 
@@ -23,13 +24,30 @@ function Home() {
 
     return (
       <div>
-        {branches.map((branch) => (
-          <div key={branch.id}>
-            <Link to={`/branch/${branch.id}`}>{branch.name}</Link>
-            <br />
-          </div>
-        ))}
+        <Table>
+          <thead>
+            <tr>
+              <th>Store Name</th>
+              <th>Location</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {branches.map((branch) => (
+              // <div key={branch.id}>
+              //   <Link to={`/branch/${branch.id}`}>{branch.name}</Link>
+              //   <br />
+              // </div>
+              <tr>
+                <td>{branch.name}</td>
+                <td>{branch.location}</td>
+                <td> <Link to={`/branch/${branch.id}`}>View</Link> </td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
       </div>
+      
     );
 };
 export default Home;

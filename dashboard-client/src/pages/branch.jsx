@@ -11,22 +11,37 @@ function Branch() {
 
     const {token} = useContext(AuthContext);
 
-    useEffect(() => {
-        axios.get(`http://127.0.0.1:3000/api/stock/?branchId=${branchId}`, {headers: {
-          Authorization: token
-        }})
+    const [loading, setLoading] = useState(true); 
+
+    const fetchData = () => {
+      axios.get(`http://127.0.0.1:3000/api/stock/?branchId=${branchId}`, {
+        headers: { Authorization: token },
+      })
         .then((res) => {
-          setItems(prev => (JSON.stringify(prev) === JSON.stringify(res.data) ? prev : res.data))
+          setItems((prev) => (JSON.stringify(prev) === JSON.stringify(res.data) ? prev : res.data));
         })
         .catch((err) => {
-        //   console.log(err)
+          console.error(err);
         })
-      });
+        .finally(() => {
+          setLoading(false);
+        });
+    }
+
+    useEffect(() => {
+      setLoading(true);
+      fetchData();
+
+      // get data every 2 mins
+      // const interval = setInterval(fetchData, 120000)
+
+      // return () => clearInterval(interval);
+    }, [branchId, token]);
 
     // console.log(items)
 
-    if(!items || items.length == 0){
-        return <h1> No items available </h1>
+    if((!items || items.length == 0) && (!loading)){
+        return <h1> No items available under this branch </h1>
     }
 
     return (
