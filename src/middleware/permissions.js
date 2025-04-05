@@ -37,7 +37,7 @@ exports.check_item_ownership = async (req, res, next) => {
         const itemId = Number(req.query.itemId)
 
         if(!itemId){
-            res.status(400).send("No item ID provided!")
+            return res.status(400).send("No item ID provided!")
         }
 
         const itemBranch = await Item.getBranchIdByItemId({itemId: itemId})
@@ -53,10 +53,10 @@ exports.check_item_ownership = async (req, res, next) => {
         if(found){
             next()
         } else {
-            res.status(400).send("Item not associated with user")
+            return res.status(400).send("Item not associated with user")
         }
     } catch (error) {
         console.log(error)
-        res.status(400).send("Internal server error")
+        return res.status(400).send("Internal server error")
     }
 };
