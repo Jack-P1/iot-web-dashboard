@@ -34,11 +34,7 @@ function Home() {
           </thead>
           <tbody>
             {branches.map((branch) => (
-              // <div key={branch.id}>
-              //   <Link to={`/branch/${branch.id}`}>{branch.name}</Link>
-              //   <br />
-              // </div>
-              <tr>
+              <tr key={branch.id}>
                 <td>{branch.name}</td>
                 <td>{branch.location}</td>
                 <td> <Link to={`/branch/${branch.id}`}>View</Link> </td>
