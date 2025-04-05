@@ -31,7 +31,7 @@ exports.get_item_feed = asyncHandler(async (req, res) => {
 });
 
 /*
-    Get all items available by branch ID
+    Get all items available by branch ID with the most recent reading
 */
 exports.get_items_for_branch = asyncHandler(async (req, res) => {
 
@@ -40,9 +40,18 @@ exports.get_items_for_branch = asyncHandler(async (req, res) => {
     }
 
     let items = await Item.getAllItemsByBranchId({branchId: req.query.branchId})
-    console.log(items)
-    if (items?.length){
-        return res.status(200).json(items)
+    let itemReadings = await Promise.all(items.map(async (item) => {
+        const reading = await Reading.getReadingsByItemId({itemId: item.id, limit: 1})
+        const latest = reading[0];
+        console.log('READING RESULT: ', reading)
+        return {
+            id: item.id, 
+            name: item.name, 
+            latestReading: latest ? latest.reading_value : null}
+    }))
+
+    if (itemReadings?.length){
+        return res.status(200).json(itemReadings)
     } else{
         return res.status(404).send("No items found for branch")
     }
