@@ -2,6 +2,7 @@ const asyncHandler = require("express-async-handler")
 const MQTTGroup = require("../database/mqttGroupModel")
 const MQTTTopic = require("../database/mqttTopicModel")
 const Item = require("../database/itemModel")
+const Reading = require("../database/readingModel")
 
 /*
     Get corresponding mqtt feed data by item id
@@ -9,16 +10,24 @@ const Item = require("../database/itemModel")
 exports.get_item_feed = asyncHandler(async (req, res) => {
 
     if(!req.query.itemId){
-        res.status(400).send("No item id given")
+        return res.status(400).send("No item id given")
     }
 
-    const topic = await MQTTTopic.getTopicByItemId({itemId: req.query.itemId})
-    console.log(topic)
-    if (topic){
-        return res.status(200).json(topic)
+    const item = Item.getItemById({itemId: req.query.itemId})
+
+    if(item){
+        if(req.query.start && req.query.end){
+            // TODO implement date range selection
+        }
+
+        const readings = req.query.limit ? await Reading.getReadingsByItemId({itemId: req.query.itemId, limit: req.query.limit}) : await Reading.getReadingsByItemId({itemId: req.query.itemId, limit: 99999999})
+        console.log(readings)
+
+        return res.status(200).json(readings)
     } else{
-        return res.status(404).send("No data found for item")
+        return res.status(404).send("No item found for provided ID")
     }
+
 });
 
 /*

@@ -9,26 +9,14 @@ const db = new sqlite.Database(dbPath, sqlite.OPEN_READWRITE, (err) => {
     }
 });
 
-// exports.bulkInsert = async (params) => {
-//     return new Promise((resolve, reject) => {
-//         if(params?.length){
-//             db.serialize(() => {
-//                 db.run("begin transaction");
-    
-//                 for (let i = 0; i < params.length; i++){
-                    
-//                     db.run("INSERT INTO reading (itemId, reading_value) VALUES (?,?);", params[i].id, params[i].data, (err) => {
-//                         if (err) reject(err);
-//                     })
-//                 }
-
-//                 db.run("commit");
-//             })
-//         } else {
-//             reject()
-//         }
-//     })
-// }
+exports.getReadingsByItemId = async (params) => {
+    return new Promise((resolve, reject) => {
+        db.all('SELECT * FROM reading WHERE itemId = ? ORDER BY timestamp DESC LIMIT ?', [params.itemId, params.limit], (err, row) => {
+            if (err) reject(err);
+            resolve(row);
+        })
+    })
+}
 
 exports.bulkInsert = async (params) => {
     return new Promise((resolve, reject) => {
@@ -63,3 +51,5 @@ exports.bulkInsert = async (params) => {
         }
     })
 }
+
+exports.getLatest

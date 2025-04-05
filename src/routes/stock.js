@@ -8,7 +8,8 @@ const express = require('express')
 const router = express.Router()
 
 router.get('/', auth.verifyToken, permissions.check_branch_ownership, stock.get_items_for_branch)
-router.get('/item', auth.verifyToken, permissions.check_item_ownership, stock.get_item_feed)
+// expects itemId. Optional: limit
+router.get('/item/data', auth.verifyToken, permissions.check_item_ownership, stock.get_item_feed)
 router.post('/feed', stock.create_feed)
 router.post('/group/feed', stock.create_group_feed)
 
