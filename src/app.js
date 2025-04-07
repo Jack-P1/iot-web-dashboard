@@ -7,6 +7,7 @@ const port = 3000
 const user = require('./routes/user')
 const stock = require('./routes/stock')
 const branch = require('./routes/branch')
+const item = require('./routes/item')
 
 const jobs = require('./cron/jobs')
 
@@ -18,6 +19,7 @@ app.use(express.json())
 app.use('/api/user', user)
 app.use('/api/stock', stock)
 app.use('/api/branch', branch)
+app.use('/api/item', item)
 
 cron.schedule('* * * * *', () => {
   try{
