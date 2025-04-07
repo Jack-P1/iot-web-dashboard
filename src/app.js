@@ -20,7 +20,18 @@ app.use('/api/stock', stock)
 app.use('/api/branch', branch)
 
 cron.schedule('* * * * *', () => {
-  jobs.getBatchMqttData()
+  try{
+    const now = new Date(Date.now())
+    const hour = now.getHours()
+    
+    if(hour >= 8 && hour < 21){
+      jobs.getBatchMqttData()
+    } else{
+      console.log("CRON job skipped as outside scheduled time")
+    }
+  } catch(err){
+    console.log(err)
+  }
 })
 
 app.listen(port, () => {

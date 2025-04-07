@@ -4,7 +4,6 @@ const Reading = require('../database/readingModel')
 /*
     Get MQTT feed data at a set interval defined in app.js.
     This could be improved by implementing concurrency, limiting the amount of API requests (e.g. p-limit), and looking at a distributed architecture (microservice, aws lambda).
-    TODO: test database write with multiple response objects
 */
 exports.getBatchMqttData = async () => {
     try{
@@ -23,7 +22,6 @@ exports.getBatchMqttData = async () => {
                 topic: result.topic
             })))
         )
-        console.log(endpoints)
     
         const responses = await Promise.all(endpoints);
     

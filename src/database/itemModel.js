@@ -12,7 +12,6 @@ exports.getItemById = async (params) => {
     return new Promise((resolve, reject) => {
         db.get('SELECT * FROM item WHERE id = ?', [params.itemId], (err, row) => {
             if (err) reject(err);
-            console.log(row);
             resolve(row);
         })
     })
@@ -23,7 +22,6 @@ exports.findItemIdByName = async (params) => {
     return new Promise((resolve, reject) => {
         db.get('SELECT id FROM item WHERE name = ?', [params.name], (err, row) => {
             if (err) reject(err);
-            console.log(row);
             resolve(row);
         })
     })
