@@ -36,13 +36,6 @@ function Branch() {
       fetchData();
     }, [branchId, token]);
 
-    useEffect(() => {
-      // setLoading(true);
-      fetchData();
-    }, [branchId, token]);
-
-    // console.log(items)
-
     if((!items || items.length == 0) && (!loading)){
         return <h1> No items available under this branch </h1>
     }
@@ -55,12 +48,17 @@ function Branch() {
                 <Card className="mt-3">
                   <Card.Body>
                     <Card.Title>{item.name}</Card.Title>
+                    {console.log(item)}
+                    <Card.Subtitle className="mb-2 text-muted">Current value: {item.latestReading ? item.latestReading : 0}</Card.Subtitle>
                     <Card.Text>
                       Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                       Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
                     </Card.Text>
                     <Link to={`/item/${item.id}`}> View </Link>
                   </Card.Body>
+                  {item.lastUpdated && (
+                    <Card.Footer className="text-muted">Updated: {item.lastUpdated}</Card.Footer>
+                  )}
                 </Card>
               </Col>
             ))}

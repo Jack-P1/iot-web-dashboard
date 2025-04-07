@@ -27,7 +27,7 @@ const AuthProvider = ({children}) => {
       try {
         // TODO implement this properly
         //   const res = await axios.get("http://localhost:3000/api/protected", { withCredentials: true });
-        setUser("TestUser");
+        setUser({name: "TestUser", role: "User"});
       } catch (err) {
         console.log("User fetch failed", err);
       }
