@@ -21,7 +21,6 @@ exports.get_item_feed = asyncHandler(async (req, res) => {
         }
 
         const readings = req.query.limit ? await Reading.getReadingsByItemId({itemId: req.query.itemId, limit: req.query.limit}) : await Reading.getReadingsByItemId({itemId: req.query.itemId, limit: 99999999})
-        console.log(readings)
 
         return res.status(200).json(readings)
     } else{
@@ -43,11 +42,11 @@ exports.get_items_for_branch = asyncHandler(async (req, res) => {
     let itemReadings = await Promise.all(items.map(async (item) => {
         const reading = await Reading.getReadingsByItemId({itemId: item.id, limit: 1})
         const latest = reading[0];
-        console.log('READING RESULT: ', reading)
         return {
             id: item.id, 
             name: item.name, 
-            latestReading: latest ? latest.reading_value : null}
+            latestReading: latest ? latest.reading_value : null,
+            lastUpdated: latest? latest.timestamp : null}
     }))
 
     if (itemReadings?.length){
@@ -60,7 +59,6 @@ exports.get_items_for_branch = asyncHandler(async (req, res) => {
 exports.create_feed = asyncHandler(async (req, res) => {
 
     const url = `https://io.adafruit.com/api/v2/${process.env.MQTT_USERNAME}/feeds/`
-    console.log(url)
 
     const data = {
         feed: {
@@ -96,8 +94,6 @@ exports.create_feed = asyncHandler(async (req, res) => {
     TODO: add API key authentication
 */
 exports.create_group_feed = asyncHandler(async (req, res) => {
-
-    console.log(req.body.groupKey)
 
     let group = await MQTTGroup.findGroupByKey({key: req.body.groupKey})
     let item = await Item.findItemIdByName({name: req.body.clientId})
@@ -136,7 +132,6 @@ exports.create_group_feed = asyncHandler(async (req, res) => {
         }
 
         let branch = await MQTTGroup.getBranchId({id: group.id})
-        console.log(branch)
 
         await Item.createNewItem({name: req.body.clientId, reading: 0, branchId: branch.branchId})
 
