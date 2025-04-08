@@ -1,9 +1,16 @@
 import { AuthContext } from "./Auth";
 import React, {useContext, useEffect, useState} from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 function Navbar(){
     const {user, token} = useContext(AuthContext);
+
+    const location = useLocation();
+
+    // Hide navbar on login page (you can add more routes to this array)
+    const hiddenRoutes = ["/"];
+    if (hiddenRoutes.includes(location.pathname)) return null;
+
     if(!token || !user) return null;
 
     return (
