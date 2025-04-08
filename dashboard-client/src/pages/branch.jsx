@@ -54,7 +54,7 @@ function Branch() {
                       Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                       Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
                     </Card.Text>
-                    <Link to={`/item/${item.id}`}> View </Link>
+                    <Link to={`/item/${item.id}`} state={{item}}> View </Link>
                   </Card.Body>
                   {item.lastUpdated && (
                     <Card.Footer className="text-muted">Updated: {item.lastUpdated}</Card.Footer>
