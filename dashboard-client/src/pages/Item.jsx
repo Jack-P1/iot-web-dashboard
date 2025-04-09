@@ -1,4 +1,5 @@
 import axios from "axios";
+import Chart from "./Chart";
 import { useEffect, useState, useContext } from "react";
 import { AuthContext } from "./Auth";
 import { useParams, useLocation, Link } from "react-router-dom";
@@ -16,7 +17,7 @@ function Item() {
     const [itemData, setItemData] = useState(item);
     
     const {token} = useContext(AuthContext);
-    const [tabKey, setTabKey] = useState('home');
+    const [tabKey, setTabKey] = useState('24hr');
 
     useEffect(() => {
         // fallback: fetch if item wasn't passed (e.g. user loaded /item/:id directly)
@@ -40,6 +41,14 @@ function Item() {
     }
 
     if(!itemData) return <div> Loading... </div>
+
+    const dateTo = new Date(itemData.lastUpdated)
+    const dateFrom = new Date(dateTo)
+    dateFrom.setDate(dateFrom.getDate() - 1)
+
+    // const formattedDateFrom = encodeURIComponent(dateFrom.toISOString());
+    // const formattedDateTo = encodeURIComponent(dateTo.toISOString());
+
     return (
         <div>
             <div className="container d-flex justify-content-center">
@@ -61,7 +70,9 @@ function Item() {
                 className="mb-3"
             >
                 <Tab eventKey="24hr" title="24hr">
-                    Tab content for 24hr
+                    <div className="container d-flex justify-content-center mb-2" style={{height:400}}>
+                        <Chart dateFrom={dateFrom} dateTo={dateTo} itemId={itemId}> </Chart>
+                    </div>
                 </Tab>
                 <Tab eventKey="48hr" title="48hr">
                     Tab content for 48hr
