@@ -46,9 +46,6 @@ function Item() {
     const dateFrom = new Date(dateTo)
     dateFrom.setDate(dateFrom.getDate() - 1)
 
-    // const formattedDateFrom = encodeURIComponent(dateFrom.toISOString());
-    // const formattedDateTo = encodeURIComponent(dateTo.toISOString());
-
     return (
         <div>
             <div className="container d-flex justify-content-center">

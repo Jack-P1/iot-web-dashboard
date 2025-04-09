@@ -15,28 +15,25 @@ function Chart(props) {
 
     const formattedDateFrom = encodeURIComponent(props.dateFrom.toISOString());
     const formattedDateTo = encodeURIComponent(props.dateTo.toISOString());
-    const url = `http://127.0.0.1:3000/api/item/?itemId=${props.itemId}%start=${formattedDateFrom}&end=${formattedDateTo}`
-    console.log(url)
-    // useEffect(() => {
-    //     axios.get(`http://127.0.0.1:3000/api/item/?itemId=${props.itemId}%start=${props.dateFrom}&end=${props.dateTo}`)
-    // }, []);
 
-    // test data
-    const readings = [
-        { reading_value: "5",  timestamp: "2025-04-05 19:48:00" },
-        { reading_value: "10", timestamp: "2025-04-05 20:30:00" },
-        { reading_value: "15", timestamp: "2025-04-05 21:45:00" },
-        { reading_value: "20", timestamp: "2025-04-05 22:30:00" },
-        { reading_value: "25", timestamp: "2025-04-05 23:00:00" },
-        { reading_value: "30", timestamp: "2025-04-05 23:30:00" },
-        { reading_value: "60", timestamp: "2025-04-06 08:25:00" }
-    ]
+    useEffect(() => {
+        axios.get(`http://127.0.0.1:3000/api/stock/item/data?itemId=${props.itemId}&start=${formattedDateFrom}&end=${formattedDateTo}`, {
+            headers: { Authorization: token },
+        })
+        .then((res) => {
+            const sortedData = res.data.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+            setChartData(sortedData)
+        })
+        .catch((err) => {
+            console.error(err);
+        })
 
-    const times = readings.map((point) => {
+    }, []);
+
+    const times = chartData.map((point) => {
         const time = new Date(point.timestamp);
         return time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     });
-
 
     // chart data
     const data = {
@@ -44,7 +41,7 @@ function Chart(props) {
         datasets: [
             {
                 label: 'Readings',
-                data: readings.map(point => Number(point.reading_value)),
+                data: chartData.map(point => Number(point.reading_value)),
                 borderColor: 'rgba(75,192,192,1)',
                 backgroundColor: 'rgba(75,192,192,0.2)',
                 tension: 0.1, 
