@@ -18,6 +18,16 @@ exports.findUserByEmail = async (params) => {
     })
 }
 
+exports.getUserById = async (params) => {
+    return new Promise((resolve, reject) => {
+        db.get('SELECT user.username, user.email, role.roleName, company.name AS companyName FROM user INNER JOIN role ON user.roleId = role.id INNER JOIN company ON user.companyId = company.id WHERE user.id = ?', [params.userId], (err, row) => {
+            if (err) reject(err);
+            console.log(row);
+            resolve(row);
+        })
+    })
+}
+
 exports.getUserCompanyId = async (params) => {
     return new Promise((resolve, reject) => {
         db.get('SELECT companyId FROM user WHERE id = ?', [params.userId], (err, row) => {

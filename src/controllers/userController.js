@@ -3,8 +3,32 @@ const jwt = require('jsonwebtoken');
 const User = require("../database/userModel")
 const asyncHandler = require("express-async-handler")
 
+/*
+    Route to get user details.
+    Currently only accepts user ID. Can expand to list all users if request comes from an admin
+*/
 exports.user_list = asyncHandler(async (req, res, next) => {
-    res.send("NOT IMPLEMENTED: user list")
+    
+    if(!req.query.userId){
+        res.status(400).send("No user id given")
+    }
+
+    if(req.query.userId != req.userId){
+        res.status(403).send("Unauthorized")
+    }
+
+    try{
+        const user = await User.getUserById({userId: req.userId})
+        
+        if(!user){
+            return res.status(404).send("User does not exist")
+        }
+
+        return res.status(200).json(user)
+    } catch(err){
+        console.log(err)
+        return res.status(500).send("Internal server error")
+    }
 });
 
 exports.user_create = asyncHandler(async (req, res, next) => {
