@@ -12,7 +12,7 @@ function Branch() {
 
     const [items, setItems] = useState([])
 
-    const {token} = useContext(AuthContext);
+    const {token, user} = useContext(AuthContext);
 
     const [loading, setLoading] = useState(true); 
 
@@ -55,6 +55,7 @@ function Branch() {
                       Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
                     </Card.Text>
                     <Link to={`/item/${item.id}`} state={{item}}> View </Link>
+                    {user?.role == 'admin' && <><br /> <Link to={`/item/${item.id}/edit`} state={{item}}> Edit </Link> </>}
                   </Card.Body>
                     <Card.Footer className="text-muted">Updated: {item.lastUpdated ? item.lastUpdated : ''}</Card.Footer> 
                 </Card>
