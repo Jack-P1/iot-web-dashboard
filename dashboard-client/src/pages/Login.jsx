@@ -12,7 +12,7 @@ function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    const {setToken} = useContext(AuthContext);
+    const {setToken, setUser} = useContext(AuthContext);
 
     async function handleLogin(event){
         event.preventDefault()

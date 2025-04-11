@@ -56,9 +56,7 @@ function Branch() {
                     </Card.Text>
                     <Link to={`/item/${item.id}`} state={{item}}> View </Link>
                   </Card.Body>
-                  {item.lastUpdated && (
-                    <Card.Footer className="text-muted">Updated: {item.lastUpdated}</Card.Footer>
-                  )}
+                    <Card.Footer className="text-muted">Updated: {item.lastUpdated ? item.lastUpdated : ''}</Card.Footer> 
                 </Card>
               </Col>
             ))}
