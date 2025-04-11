@@ -20,7 +20,7 @@ function Navbar(){
 
     return (
         <nav className="navbar navbar-expand-md navbar-light bg-success">
-            <a className="navbar-brand" href="#">{user.name} <br /> {user.role}</a>
+            <a className="navbar-brand" href="#"> Eco Dashboard</a>
             <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>
             </button>
