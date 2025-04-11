@@ -33,8 +33,13 @@ const AuthProvider = ({children}) => {
       }
     };
 
+    const logout = async () => {
+      setToken(null);
+      setUser(null);
+    }
+
     return (
-        <AuthContext.Provider value={{ user, token, setToken, setUser }}>
+        <AuthContext.Provider value={{ user, token, setToken, setUser, logout }}>
           {children}
         </AuthContext.Provider>
       );
