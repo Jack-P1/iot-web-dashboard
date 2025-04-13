@@ -51,8 +51,7 @@ function Branch() {
                     {console.log(item)}
                     <Card.Subtitle className="mb-2 text-muted">Current value: {item.latestReading ? item.latestReading : 0}</Card.Subtitle>
                     <Card.Text>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                      Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                      {item.description ? item.description : ''}
                     </Card.Text>
                     <Link to={`/item/${item.id}`} state={{item}}> View </Link>
                     {user?.role == 'admin' && <><br /> <Link to={`/item/${item.id}/edit`} state={{item}}> Edit </Link> </>}
