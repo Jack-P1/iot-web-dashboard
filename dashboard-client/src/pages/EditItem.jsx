@@ -2,7 +2,7 @@ import axios from "axios";
 import Chart from "./Chart";
 import { useEffect, useState, useContext } from "react";
 import { AuthContext } from "./Auth";
-import { useParams, useLocation, Link } from "react-router-dom";
+import { useParams, useLocation, useNavigate, Link } from "react-router-dom";
 import Form from 'react-bootstrap/Form';
 import Button from "react-bootstrap/Button";
 
@@ -19,6 +19,7 @@ function EditItemForm() {
     const[description, setDescription] = useState(itemData.description ? itemData.description : '')
     
     const {token} = useContext(AuthContext);
+    const navigate = useNavigate();
 
 
     useEffect(() => {
@@ -37,10 +38,26 @@ function EditItemForm() {
         }
       }, [item, itemId]);
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault()
         console.log(name)
         console.log(description)
+
+        try {
+            const response = await axios.post('http://127.0.0.1:3000/api/item/edit/', {itemId, name, description}, 
+                { headers: { Authorization: token } });
+            
+            if(response.status == 200){
+                setItemData(prev => ({
+                    ...prev,
+                    name,
+                    description
+                }))
+            }
+            
+        } catch(err) {
+            console.log(err)
+        }
     }
 
 
