@@ -38,7 +38,7 @@ exports.createNewItem = async (params) => {
 
 exports.getAllItemsByBranchId = async (params) => {
     return new Promise((resolve, reject) => {
-        db.all('SELECT id, name FROM item WHERE branchId = ?', [params.branchId], (err, row) => {
+        db.all('SELECT id, name, description FROM item WHERE branchId = ?', [params.branchId], (err, row) => {
             if (err) reject(err);
             resolve(row);
         })
@@ -50,6 +50,15 @@ exports.getBranchIdByItemId = async (params) => {
         db.get('SELECT branchId FROM item WHERE id = ?', [params.itemId], (err, row) => {
             if (err) reject(err);
             resolve(row);
+        })
+    })
+}
+
+exports.updateItem = async (params) => {
+    return new Promise((resolve, reject) => {
+        db.run('UPDATE item SET name = ?, description = ? WHERE id = ?', [params.name, params.description, params.itemId], (err) => {
+            if (err) reject(err);
+            resolve();
         })
     })
 }

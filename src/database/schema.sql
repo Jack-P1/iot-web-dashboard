@@ -30,6 +30,7 @@ CREATE TABLE `branch` (
 CREATE TABLE `item` (
   `id` integer PRIMARY KEY,
   `name` TEXT,
+  `description` TEXT,
   `branchId` integer,
   FOREIGN KEY(branchId) REFERENCES branch(id)
 );
@@ -86,8 +87,8 @@ VALUES ('Eco Bristol', 'Gloucester Road', (SELECT id from company WHERE name = '
        ('Company Two Ltd', 'Bristol', (SELECT id from company WHERE name = 'Company Two'));
 
 INSERT INTO item (name, branchId)
-VALUES ('testPico', (SELECT id from branch WHERE name = 'Eco Bristol')),
-       ('test-pico-7', (SELECT id from branch WHERE name = 'Eco Bristol'));
+VALUES ('testPico', '', (SELECT id from branch WHERE name = 'Eco Bristol')),
+       ('test-pico-7', '', (SELECT id from branch WHERE name = 'Eco Bristol'));
 
 INSERT INTO mqtt_group (groupKey, branchId)
 VALUES ('eco-bristol', (SELECT id from branch WHERE name = 'Eco Bristol'));
