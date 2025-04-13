@@ -55,7 +55,8 @@ exports.get_items_for_branch = asyncHandler(async (req, res) => {
         const latest = reading[0];
         return {
             id: item.id, 
-            name: item.name, 
+            name: item.name,
+            description: item.description ? item.description : '',
             latestReading: latest ? latest.reading_value : null,
             lastUpdated: latest? latest.timestamp : null}
     }))
