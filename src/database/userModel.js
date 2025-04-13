@@ -10,7 +10,7 @@ const db = new sqlite.Database(dbPath, sqlite.OPEN_READWRITE, (err) => {
 
 exports.findUserByEmail = async (params) => {
     return new Promise((resolve, reject) => {
-        db.get('SELECT * FROM user WHERE email = ?', [params.email], (err, row) => {
+        db.get('SELECT user.id, user.username, user.email, user.password, role.roleName, user.companyId FROM user INNER JOIN role ON user.roleId = role.id WHERE email = ?', [params.email], (err, row) => {
             if (err) reject(err);
             console.log(row);
             resolve(row);

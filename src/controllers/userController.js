@@ -9,13 +9,13 @@ const asyncHandler = require("express-async-handler")
 */
 exports.user_list = asyncHandler(async (req, res, next) => {
     
-    if(!req.query.userId){
-        res.status(400).send("No user id given")
-    }
+    // if(!req.query.userId){
+    //     res.status(400).send("No user id given")
+    // }
 
-    if(req.query.userId != req.userId){
-        res.status(403).send("Unauthorized")
-    }
+    // if(req.query.userId != req.userId){
+    //     res.status(403).send("Unauthorized")
+    // }
 
     try{
         const user = await User.getUserById({userId: req.userId})
@@ -23,7 +23,7 @@ exports.user_list = asyncHandler(async (req, res, next) => {
         if(!user){
             return res.status(404).send("User does not exist")
         }
-
+        user.id = req.userId
         return res.status(200).json(user)
     } catch(err){
         console.log(err)
@@ -74,9 +74,9 @@ exports.user_login = asyncHandler(async (req, res, next) => {
         }   
 
         // TODO: replace with env secret, add expiry
-        const token = jwt.sign({ id: user.id, role: user.role }, 'secret');
+        const token = jwt.sign({ id: user.id, role: user.roleName }, 'secret');
 
-        return res.status(200).json({token: token})
+        return res.status(200).json({id: user.id, token: token})
     } catch (err){
         return res.status(500).json({error : 'Internal server error'})
     }

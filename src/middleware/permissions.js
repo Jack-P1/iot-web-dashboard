@@ -34,7 +34,7 @@ exports.check_branch_ownership = async (req, res, next) => {
 // check user is able to access item
 exports.check_item_ownership = async (req, res, next) => {
     try {
-        const itemId = Number(req.query.itemId)
+        const itemId = Number(req.query.itemId) ? Number(req.query.itemId) : Number(req.body.itemId)
 
         if(!itemId){
             return res.status(400).send("No item ID provided!")
@@ -60,3 +60,15 @@ exports.check_item_ownership = async (req, res, next) => {
         return res.status(400).send("Internal server error")
     }
 };
+
+// authenticate user role
+exports.require_role = (requiredRole) => {
+    return (req, res, next) => {
+        console.log(requiredRole)
+        console.log(req.role)
+        if(!req.userId || req.role != requiredRole){
+            return res.status(403).send("Access denied: you do not have the permissions to carry out this action")
+        }
+        next();
+    }
+}
