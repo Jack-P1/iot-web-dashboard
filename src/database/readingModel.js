@@ -27,14 +27,19 @@ exports.bulkInsert = async (params) => {
                 for (let i = 0; i < params.length; i++){
                     const {id, data} = params[i];
 
-                    db.get("SELECT reading_value FROM reading WHERE itemId = ? ORDER BY timestamp DESC LIMIT 1", [id], (err, row) => {
+                    if(!data){
+                        continue
+                    }
+
+                    db.get("SELECT distance FROM reading WHERE itemId = ? ORDER BY timestamp DESC LIMIT 1", [id], (err, row) => {
                         if(err) {
                             reject(err);
                             return
                         }
 
-                        if(!row || row.reading_value !== data){
-                            db.run("INSERT INTO reading (itemId, reading_value) VALUES (?,?)", [id, data], (err) => {
+                        if(!row || row.distance != data.distance){
+                            console.log("DISTANCE: ",  data.distance)
+                            db.run("INSERT INTO reading (itemId, distance, temperature) VALUES (?,?,?)", [id, data.distance, data.temp], (err) => {
                                 if (err) reject(err);
                             })
                         }

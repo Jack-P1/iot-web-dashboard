@@ -62,7 +62,8 @@ CREATE TABLE `mqtt_topic` (
 CREATE TABLE `reading` (
   `id` integer PRIMARY KEY,
   `itemId` integer,
-  `reading_value` TEXT,
+  `distance` TEXT,
+  'temperature' TEXT,
   `timestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
   FOREIGN KEY(itemId) REFERENCES item(id)
 );
@@ -86,12 +87,16 @@ VALUES ('Eco Bristol', 'Gloucester Road', (SELECT id from company WHERE name = '
        ('Eco Bath', 'Bath', (SELECT id from company WHERE name = 'Eco Ltd')),
        ('Company Two Ltd', 'Bristol', (SELECT id from company WHERE name = 'Company Two'));
 
-INSERT INTO item (name, branchId)
-VALUES ('testPico', '', (SELECT id from branch WHERE name = 'Eco Bristol')),
-       ('test-pico-7', '', (SELECT id from branch WHERE name = 'Eco Bristol'));
+INSERT INTO item (name, description, branchId)
+VALUES ('item-1', '', (SELECT id from branch WHERE name = 'Eco Bristol')),
+       ('item-2', '', (SELECT id from branch WHERE name = 'Eco Bristol')),
+       ('test-pico-7', '', (SELECT id from branch WHERE name = 'Eco Bristol')),
+       ('another-item', '', (SELECT id from branch WHERE name = 'Company Two Ltd'));
 
 INSERT INTO mqtt_group (groupKey, branchId)
 VALUES ('eco-bristol', (SELECT id from branch WHERE name = 'Eco Bristol'));
 
 INSERT INTO mqtt_topic (topic, qos, last_payload, itemId) 
-VALUES ('test-pico-7', 0, '', (SELECT id FROM item WHERE name = 'test-pico-7'))
+VALUES ('test-pico-7', 0, '', (SELECT id FROM item WHERE name = 'test-pico-7')),
+       ('item-1', 0, '', (SELECT id FROM item WHERE name = 'item-1')),
+       ('item-2', 0, '', (SELECT id FROM item WHERE name = 'item-2'));

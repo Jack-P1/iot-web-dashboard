@@ -64,8 +64,6 @@ exports.check_item_ownership = async (req, res, next) => {
 // authenticate user role
 exports.require_role = (requiredRole) => {
     return (req, res, next) => {
-        console.log(requiredRole)
-        console.log(req.role)
         if(!req.userId || req.role != requiredRole){
             return res.status(403).send("Access denied: you do not have the permissions to carry out this action")
         }

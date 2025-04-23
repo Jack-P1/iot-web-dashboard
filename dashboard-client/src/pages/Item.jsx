@@ -36,7 +36,6 @@ function Item() {
       }, [item, itemId]);
 
     function handleSelect(k){
-        console.log("SELECT!")
         setTabKey(k)
     }
 
@@ -52,10 +51,10 @@ function Item() {
                 <h2 className="mt-2"> {itemData.name} </h2> 
             </div>
             <div className="container d-flex justify-content-center">
-                <h3> Current status: {itemData.latestReading}</h3>
+                <h3> Current status: {itemData.latestDistance}</h3>
             </div>
             <div className="container d-flex justify-content-center">
-                <h3> Temperature: </h3>
+                <h3> Temperature: {itemData.latestTemp}</h3>
             </div>
             <div className="container d-flex justify-content-center">
                 <h3> Last updated: {itemData.lastUpdated}</h3>

@@ -49,7 +49,7 @@ function Branch() {
                   <Card.Body>
                     <Card.Title>{item.name}</Card.Title>
                     {console.log(item)}
-                    <Card.Subtitle className="mb-2 text-muted">Current value: {item.latestReading ? item.latestReading : 0}</Card.Subtitle>
+                    <Card.Subtitle className="mb-2 text-muted">Current value: {item.latestDistance ? item.latestDistance : 0}</Card.Subtitle>
                     <Card.Text>
                       {item.description ? item.description : ''}
                     </Card.Text>

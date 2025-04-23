@@ -26,7 +26,7 @@ cron.schedule('* * * * *', () => {
     const now = new Date(Date.now())
     const hour = now.getHours()
     
-    if(hour >= 8 && hour < 21){
+    if(hour >= 8 && hour < 23){
       jobs.getBatchMqttData()
     } else{
       console.log("CRON job skipped as outside scheduled time")

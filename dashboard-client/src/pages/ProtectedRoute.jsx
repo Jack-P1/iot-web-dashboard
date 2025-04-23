@@ -9,8 +9,7 @@ const RequireAuth = ({ children, allowedRoles }) => {
     if (!token){
         return <Navigate to="/" />
     }
-    // console.log(user.role)
-    // console.log(allowedRoles)
+
     if(allowedRoles && 
         (!user?.role || !allowedRoles.includes(user.role))
     ){

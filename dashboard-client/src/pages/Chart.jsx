@@ -41,7 +41,7 @@ function Chart(props) {
         datasets: [
             {
                 label: 'Readings',
-                data: chartData.map(point => Number(point.reading_value)),
+                data: chartData.map(point => Number(point.distance)),
                 borderColor: 'rgba(75,192,192,1)',
                 backgroundColor: 'rgba(75,192,192,0.2)',
                 tension: 0.1, 

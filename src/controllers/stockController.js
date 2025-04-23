@@ -22,8 +22,6 @@ exports.get_item_feed = asyncHandler(async (req, res) => {
             // TODO: CHECK VALID DATE FORMAT
             const dateFrom = new Date(req.query.start)
             const dateTo = new Date(req.query.end)
-            console.log("FROM: ", dateFrom)
-            console.log("TO: ", dateTo)
 
             const filteredReadings = readings.filter((reading)=> {
                 const readingDate = new Date(reading.timestamp)
@@ -57,7 +55,8 @@ exports.get_items_for_branch = asyncHandler(async (req, res) => {
             id: item.id, 
             name: item.name,
             description: item.description ? item.description : '',
-            latestReading: latest ? latest.reading_value : null,
+            latestDistance: latest ? latest.distance : null,
+            latestTemp: latest ? latest.temperature : null,
             lastUpdated: latest? latest.timestamp : null}
     }))
 
