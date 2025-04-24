@@ -62,3 +62,12 @@ exports.updateItem = async (params) => {
         })
     })
 }
+
+exports.removeItem = async (params) => {
+    return new Promise((resolve, reject) => {
+        db.run('DELETE FROM item WHERE id = ?', [params.itemId], (err) => {
+            if (err) reject(err);
+            resolve();
+        })
+    })
+}

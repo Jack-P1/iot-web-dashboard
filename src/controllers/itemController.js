@@ -2,6 +2,20 @@ const asyncHandler = require("express-async-handler")
 const Item = require("../database/itemModel")
 const Reading = require("../database/readingModel")
 
+exports.delete_item = asyncHandler(async (req, res) => {
+
+    if (!('itemId' in req.body)) {
+        return res.status(400).send(`Missing required parameter: ${param}`);
+    }
+
+    try{
+        await Item.removeItem({itemId: req.body.itemId})
+        return res.status(200).send("Item removed successfully")
+    } catch(err){
+        return res.status(500).send("Internal server error")
+    }
+})
+
 exports.edit_item = asyncHandler(async (req, res) => {
     const requiredParams = ['itemId', 'name', 'description'];
 

@@ -9,5 +9,6 @@ const router = express.Router()
 
 router.get('/', auth.verifyToken, permissions.check_item_ownership, item.get_item)
 router.post('/edit', auth.verifyToken, permissions.check_item_ownership, permissions.require_role('admin'), item.edit_item)
+router.post('/delete', auth.verifyToken, permissions.check_item_ownership, permissions.require_role('admin'), item.delete_item)
 
 module.exports = router

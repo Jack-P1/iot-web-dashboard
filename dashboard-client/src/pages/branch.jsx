@@ -1,6 +1,7 @@
 import axios from "axios";
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
+import DeleteModal from "./DeleteModal";
 import { useEffect, useState, useContext } from "react";
 import { AuthContext } from "./Auth";
 import { useParams, Link } from "react-router-dom";
@@ -31,6 +32,16 @@ function Branch() {
         });
     }
 
+    const handleDelete = async (itemId) => {
+      console.log(itemId)
+      const response = await axios.post('http://127.0.0.1:3000/api/item/delete/', {itemId},
+        { headers: { Authorization: token } });
+
+      if (response.status == 200) {
+        setItems((prev) => prev.filter(item => item.id != itemId))
+      }
+    }
+
     useEffect(() => {
       setLoading(true);
       fetchData();
@@ -55,6 +66,9 @@ function Branch() {
                     </Card.Text>
                     <Link to={`/item/${item.id}`} state={{item}}> View </Link>
                     {user?.role == 'admin' && <><br /> <Link to={`/item/${item.id}/edit`} state={{item}}> Edit </Link> </>}
+                    {/* {user?.role == 'admin' && <><br /> <Link onClick={() => handleDelete(item.id)}> Delete </Link> </>} */}
+                    {user?.role == 'admin' && <><br /> <DeleteModal item={item} handleDelete={handleDelete}></DeleteModal> </>}
+
                   </Card.Body>
                     <Card.Footer className="text-muted">Updated: {item.lastUpdated ? item.lastUpdated : ''}</Card.Footer> 
                 </Card>
